@@ -1,24 +1,19 @@
 ﻿using Microsoft.Kinect;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace kinect1
 {
     class Program
     {
 
-        UdpClient client; 
-
+        UdpClient client;
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
-        [STAThread]
         static void Main()
         {
             Program p = new Program();
@@ -65,21 +60,22 @@ namespace kinect1
                 var jointTypes = Enum.GetValues(typeof(JointType));
                 foreach (JointType type in jointTypes)
                 {
-                    msg = msg + s.Joints[type].Position.X + ";" + s.Joints[type].Position.Y + ";" + s.Joints[type].Position.Z + ";";
+                    msg = msg + s.Joints[type].Position.X + ";" + s.Joints[type].Position.Y + ";" + (-s.Joints[type].Position.Z) + ";";
                 }
                 msg = msg.Replace(',', '.');
-                //Console.WriteLine(msg);
                 sendToVR(msg);
-                //Console.WriteLine(head.Position.X + ", " + head.Position.Y + ", " + head.Position.Z);
-                //Console.WriteLine(s.Position.X + ", " + s.Position.Y + ", " + s.Position.Z );
             }
-            Console.WriteLine();
+            //Console.WriteLine();
         }
 
         private void createUdpConnection()
         {
-            client = new UdpClient();
-            IPEndPoint ep = new IPEndPoint(IPAddress.Parse("192.168.0.38"), 8082);
+            client = new UdpClient(); //115  //38
+            Console.WriteLine("Podaj ip");
+            string ipAddres;
+            ipAddres = Console.ReadLine();
+            IPEndPoint ep = new IPEndPoint(IPAddress.Parse(ipAddres), 8082);
+            //IPEndPoint ep = new IPEndPoint(IPAddress.Parse("192.168.0.115"), 8082);
             client.Connect(ep);
         }
 
